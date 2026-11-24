@@ -1,0 +1,14 @@
+syntax = "proto3";
+package platform.ai.v1;
+service AIEngineService {
+ rpc CreateEmbedding(CreateEmbeddingRequest) returns (CreateEmbeddingResponse);
+ rpc Generate(GenerateRequest) returns (GenerateResponse);
+ rpc EstimateUsage(EstimateUsageRequest) returns (EstimateUsageResponse);
+}
+message CreateEmbeddingRequest { string organization_id=1; string model_key=2; repeated string texts=3; string purpose=4; }
+message Embedding { repeated float values=1; int32 dimensions=2; }
+message CreateEmbeddingResponse { repeated Embedding vectors=1; }
+message GenerateRequest { string organization_id=1; string user_id=2; string model_policy=3; string prompt_version=4; string input_text=5; string purpose=6; map<string,string> metadata=7; }
+message GenerateResponse { string request_id=1; string output_text=2; string model_key=3; int32 input_tokens=4; int32 output_tokens=5; }
+message EstimateUsageRequest { string model_key=1; string input_text=2; }
+message EstimateUsageResponse { int32 estimated_input_tokens=1; string cost_estimate=2; }

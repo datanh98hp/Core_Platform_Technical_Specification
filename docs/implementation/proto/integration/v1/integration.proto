@@ -1,0 +1,10 @@
+syntax = "proto3";
+package platform.integration.v1;
+service IntegrationService {
+ rpc PublishWebhook(PublishWebhookRequest) returns (PublishWebhookResponse);
+ rpc SendNotification(SendNotificationRequest) returns (SendNotificationResponse);
+}
+message PublishWebhookRequest { string organization_id=1; string event_id=2; string event_type=3; string payload_json=4; }
+message PublishWebhookResponse { int32 deliveries_created=1; }
+message SendNotificationRequest { string organization_id=1; string recipient_user_id=2; string template_key=3; map<string,string> variables=4; }
+message SendNotificationResponse { string notification_id=1; string status=2; }

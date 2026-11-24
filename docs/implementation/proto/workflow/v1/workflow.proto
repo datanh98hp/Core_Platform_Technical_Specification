@@ -1,0 +1,12 @@
+syntax = "proto3";
+package platform.workflow.v1;
+service WorkflowService {
+ rpc StartWorkflow(StartWorkflowRequest) returns (WorkflowRun);
+ rpc CompleteTask(CompleteTaskRequest) returns (WorkflowTask);
+ rpc GetRun(GetRunRequest) returns (WorkflowRun);
+}
+message StartWorkflowRequest { string organization_id=1; string workflow_key=2; string business_ref=3; string idempotency_key=4; map<string,string> input=5; }
+message WorkflowRun { string run_id=1; string status=2; }
+message CompleteTaskRequest { string organization_id=1; string task_id=2; string actor_user_id=3; string decision=4; string comment=5; string idempotency_key=6; }
+message WorkflowTask { string task_id=1; string status=2; }
+message GetRunRequest { string organization_id=1; string run_id=2; }

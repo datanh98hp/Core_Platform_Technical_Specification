@@ -1,0 +1,13 @@
+syntax = "proto3";
+package platform.core.v1;
+service CoreBusinessService {
+ rpc GetWorkspace(GetWorkspaceRequest) returns (Workspace);
+ rpc CheckModuleEntitlement(CheckModuleEntitlementRequest) returns (EntitlementResponse);
+ rpc GetTenantLimits(GetTenantLimitsRequest) returns (TenantLimits);
+}
+message GetWorkspaceRequest { string organization_id=1; string workspace_id=2; }
+message Workspace { string id=1; string organization_id=2; string name=3; string status=4; }
+message CheckModuleEntitlementRequest { string organization_id=1; string module_key=2; }
+message EntitlementResponse { bool enabled=1; map<string,string> limits=2; }
+message GetTenantLimitsRequest { string organization_id=1; }
+message TenantLimits { int64 storage_bytes_limit=1; int64 monthly_ai_tokens_limit=2; int32 seats_limit=3; }
