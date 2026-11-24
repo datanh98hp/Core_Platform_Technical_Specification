@@ -1,9 +1,9 @@
 # G5 — Customer Pilot and Value Validation
 
-**Plan version:** 1.0  
+**Plan version:** 1.1  
 **Status:** LOCKED — pending explicit user approval  
-**Target window:** Weeks 22–26  
-**Planning ceiling:** VND 24,000,000  
+**Target window:** Weeks 25–30
+**Planning ceiling:** VND 22,000,000
 **Gate:** G5 → G6  
 **Accountable owner:** Product Owner / Customer Success Owner
 
@@ -100,3 +100,33 @@ These are proposed decision thresholds, not guaranteed results. The Product Owne
 **GO to G6** requires measured product value, acceptable quality/security, unit-cost evidence, documented customer feedback, resolved data closeout and explicit user approval.
 
 **NO-GO** if severe unresolved incidents, noncompliant data flows, unmeasured operating costs or no credible market willingness to pay remain.
+
+
+## 11. V1.1 amendment — controlled pilot, legal gate and full unit economics
+
+### Pilot environment
+G5 is a controlled pre-production/private pilot, not a general production launch. Each pilot tenant must be isolated, separately configured, least-privilege and auditable. The environment must use an approved provider egress path, policy/ACL/lineage/quota controls, restricted administrative access, tested backup, incident contacts, manual fallback and a customer-agreed support window. Development Docker Compose is not accepted as a customer pilot hosting topology.
+
+### Legal and data precondition
+Before onboarding each real-data tenant, obtain counsel-reviewed customer scope and applicable contract/data-processing terms, identify controller/processor/subprocessor roles, confirm purpose and lawful basis, document data categories and regions, approve provider/subprocessor routes, retention/deletion, user notices/rights handling and incident escalation. Record the tenant approval checklist in the Legal & Data Governance Register. No data path is enabled from a verbal customer request alone.
+
+### Expanded KPI definitions
+Measure per tenant and per workflow:
+- baseline and median elapsed handling time, error/rework and human-review time;
+- weekly active use, task completion, abandonment and user feedback;
+- direct AI/OCR cost, infrastructure/storage/egress, connector and third-party charges;
+- onboarding and integration hours, support hours and human quality-assurance time;
+- total variable COGS, recurring revenue and gross margin;
+- buyer, purchase process, willingness-to-pay range, budget timing and renewal intent.
+
+Direct AI provider cost / same-scope recurring revenue ≤20% remains a target, not a substitute for total COGS. The standard recurring gross-margin target is ≥55% after variable delivery COGS. Report one-time onboarding/integration services separately.
+
+### Additional pilot exit criteria
+- 3–5 pilots remain the target; any smaller sample needs an explicit written rationale and owner decision.
+- At least two customers provide credible paid-conversion evidence with named buyer, price/budget range and purchase path.
+- At least two workflows demonstrate the agreed time/value result against a pre-pilot baseline.
+- No severe privacy/security incident; all incident and data-subject requests are handled under approved procedures.
+- A data return/deletion/retention closeout plan is agreed for each pilot.
+- The Project Owner receives a 12-month operating-cost forecast based on observed usage before authorizing G6 production-readiness work.
+
+The pilot does not authorize public release, new customer segments, unapproved custom work or use of customer data for model training.
