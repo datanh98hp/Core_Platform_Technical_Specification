@@ -1,0 +1,69 @@
+name: Materialize exact V2.2 docs archive
+
+on:
+  push:
+    branches:
+      - docs/v2.2-agent-governance
+    paths:
+      - docs-import/Core_Platform_Technical_Specification_V2.2_Architecture_Security_Hardening.zip
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materialize-v2.2-docs
+  cancel-in-progress: false
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: docs/v2.2-agent-governance
+          fetch-depth: 0
+
+      - name: Verify original archive integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARCHIVE="docs-import/Core_Platform_Technical_Specification_V2.2_Architecture_Security_Hardening.zip"
+          echo "fd27be4327fd04028142ef2a59001d78d72e2428b4ded283766a1b76afbbef3e  ${ARCHIVE}" | sha256sum --check -
+          unzip -tq "${ARCHIVE}"
+          count="$(unzip -Z1 "${ARCHIVE}" | grep -c '^docs/')"
+          test "${count}" -eq 56
+          echo "Archive has ${count} docs entries."
+
+      - name: Materialize archive into repository root
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "${tmp}"' EXIT
+          unzip -q docs-import/Core_Platform_Technical_Specification_V2.2_Architecture_Security_Hardening.zip -d "${tmp}"
+          test -f "${tmp}/docs/README.md"
+          test -f "${tmp}/docs/architecture/Core_Platform_Technical_Specification_V2.2.docx"
+          test -f "${tmp}/docs/governance/AI_Agent_Coding_Governance_v2.2.docx"
+          extracted="$(find "${tmp}/docs" -type f | wc -l | tr -d ' ')"
+          test "${extracted}" -eq 56
+          mkdir -p docs
+          rsync -a --delete "${tmp}/docs/" docs/
+          rm -rf docs-import
+          actual="$(find docs -type f | wc -l | tr -d ' ')"
+          test "${actual}" -eq 56
+          echo "Materialized ${actual} files into docs/."
+
+      - name: Commit exact archive contents to the PR branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs docs-import
+          if git diff --cached --quiet; then
+            echo "No documentation changes to commit."
+            exit 0
+          fi
+          git commit -m "docs: materialize exact original V2.2 documentation archive"
+          git push origin HEAD:docs/v2.2-agent-governance
