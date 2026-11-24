@@ -1,0 +1,13 @@
+syntax = "proto3";
+package platform.identity.v1;
+service IdentityService {
+ rpc ValidateAccess(ValidateAccessRequest) returns (ValidateAccessResponse);
+ rpc GetMembership(GetMembershipRequest) returns (GetMembershipResponse);
+ rpc CheckPermission(CheckPermissionRequest) returns (CheckPermissionResponse);
+}
+message ValidateAccessRequest { string access_token=1; string requested_tenant_id=2; }
+message ValidateAccessResponse { string user_id=1; string organization_id=2; repeated string permission_keys=3; int64 expires_at_unix=4; }
+message GetMembershipRequest { string user_id=1; string organization_id=2; }
+message GetMembershipResponse { string membership_id=1; string status=2; repeated string role_keys=3; }
+message CheckPermissionRequest { string user_id=1; string organization_id=2; string resource=3; string action=4; }
+message CheckPermissionResponse { bool allowed=1; string reason_code=2; }

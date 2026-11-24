@@ -1,0 +1,16 @@
+syntax = "proto3";
+package platform.document.v1;
+service DocumentService {
+ rpc CreateUploadSession(CreateUploadSessionRequest) returns (UploadSession);
+ rpc GetDocument(GetDocumentRequest) returns (Document);
+ rpc RequestProcessing(RequestProcessingRequest) returns (ProcessingJob);
+ rpc CreateDownloadLink(CreateDownloadLinkRequest) returns (DownloadLink);
+}
+message CreateUploadSessionRequest { string organization_id=1; string workspace_id=2; string filename=3; string mime_type=4; int64 size_bytes=5; string checksum_sha256=6; }
+message UploadSession { string document_id=1; string upload_url=2; int64 expires_at_unix=3; }
+message GetDocumentRequest { string organization_id=1; string document_id=2; }
+message Document { string id=1; string status=2; string filename=3; int64 size_bytes=4; }
+message RequestProcessingRequest { string organization_id=1; string document_id=2; string pipeline_key=3; string idempotency_key=4; }
+message ProcessingJob { string job_id=1; string status=2; }
+message CreateDownloadLinkRequest { string organization_id=1; string document_id=2; int32 ttl_seconds=3; }
+message DownloadLink { string url=1; int64 expires_at_unix=2; }

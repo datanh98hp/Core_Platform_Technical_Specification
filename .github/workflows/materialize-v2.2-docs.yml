@@ -1,0 +1,74 @@
+name: Import the exact V2.2 documentation archive
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - docs-import/Core_Platform_Technical_Specification_V2.2_Architecture_Security_Hardening.zip
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: import-exact-v2.2-docs
+  cancel-in-progress: false
+
+jobs:
+  create-docs-sync-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout upload branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify exact original archive and extract
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="docs-import/Core_Platform_Technical_Specification_V2.2_Architecture_Security_Hardening.zip"
+          echo "fd27be4327fd04028142ef2a59001d78d72e2428b4ded283766a1b76afbbef3e  ${archive}" | sha256sum --check -
+          unzip -tq "${archive}"
+          entry_count="$(unzip -Z1 "${archive}" | grep -c '^docs/')"
+          test "${entry_count}" -eq 56
+          mkdir -p "${RUNNER_TEMP}/v2.2-archive"
+          unzip -q "${archive}" -d "${RUNNER_TEMP}/v2.2-archive"
+          file_count="$(find "${RUNNER_TEMP}/v2.2-archive/docs" -type f | wc -l | tr -d ' ')"
+          test "${file_count}" -eq 56
+          test -f "${RUNNER_TEMP}/v2.2-archive/docs/architecture/Core_Platform_Technical_Specification_V2.2.docx"
+          test -f "${RUNNER_TEMP}/v2.2-archive/docs/security/AI_Data_Protection_and_Security_Harness_Policy_v2.2.docx"
+          test -f "${RUNNER_TEMP}/v2.2-archive/docs/governance/AI_Agent_Coding_Governance_v2.2.docx"
+
+      - name: Create clean sync branch from current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          sync_branch="docs/full-zip-materialization-${GITHUB_RUN_ID}"
+          git checkout -b "${sync_branch}" origin/main
+          rsync -a --delete "${RUNNER_TEMP}/v2.2-archive/docs/" docs/
+          actual="$(find docs -type f | wc -l | tr -d ' ')"
+          test "${actual}" -eq 56
+          echo "SYNC_BRANCH=${sync_branch}" >> "${GITHUB_ENV}"
+
+      - name: Commit exact documentation tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A docs
+          git commit -m "docs: synchronize exact original V2.2 archive (56 files)"
+          git push origin "${SYNC_BRANCH}"
+
+      - name: Open documentation synchronization PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr create             --repo "${GITHUB_REPOSITORY}"             --base main             --head "${SYNC_BRANCH}"             --title "docs: synchronize exact V2.2 archive (56 files)"             --body "This PR materializes the original V2.2 ZIP into docs/ after checksum verification. It replaces the docs/ tree with exactly 56 original files, including the six DOCX source documents. No application code or database was deployed."

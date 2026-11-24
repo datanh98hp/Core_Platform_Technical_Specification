@@ -1,0 +1,14 @@
+syntax = "proto3";
+package platform.knowledge.v1;
+service KnowledgeService {
+ rpc IndexDocument(IndexDocumentRequest) returns (IndexingRun);
+ rpc Search(SearchRequest) returns (SearchResponse);
+ rpc DeleteSource(DeleteSourceRequest) returns (DeleteSourceResponse);
+}
+message IndexDocumentRequest { string organization_id=1; string knowledge_base_id=2; string document_id=3; string document_version_id=4; }
+message IndexingRun { string run_id=1; string status=2; }
+message SearchRequest { string organization_id=1; string knowledge_base_id=2; string query=3; int32 top_k=4; repeated string allowed_resource_ids=5; }
+message SearchHit { string chunk_id=1; string source_id=2; string text=3; float score=4; }
+message SearchResponse { repeated SearchHit hits=1; }
+message DeleteSourceRequest { string organization_id=1; string source_id=2; }
+message DeleteSourceResponse { bool accepted=1; }
