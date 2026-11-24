@@ -1,9 +1,9 @@
 # G4 — Control Plane P1: Policy, Lineage, Quota and Resilience
 
-**Plan version:** 1.0  
+**Plan version:** 1.1  
 **Status:** LOCKED — pending explicit user approval  
-**Target window:** Weeks 18–21  
-**Planning ceiling:** VND 18,000,000  
+**Target window:** Weeks 20–24
+**Planning ceiling:** VND 23,000,000
 **Gate:** G4 → G5  
 **Accountable owner:** Technical Owner with Security/Finance reviewers
 
@@ -94,3 +94,37 @@ Complete the P1 control-plane capabilities required for reliable multi-tenant op
 **GO to G5** requires the mandatory P1 acceptance set, P0 regression evidence, security review, operational visibility and explicit user approval.
 
 **NO-GO** for unresolved ACL revocation, incomplete deletion, duplicate billing, tenant cost leakage or unapproved fallback.
+
+
+## 11. V1.1 amendment — essential resilience must pass before pilot
+
+This amendment clarifies the G2/G4/G6 boundary and overrides any interpretation that defers all circuit-breaker behavior to G6.
+
+### Essential G4 resilience scope
+- Circuit breaker state machine for each approved provider route, including open/half-open/closed behavior, thresholds, cooldown and telemetry.
+- Bounded retries with exponential backoff and jitter, request deadlines, idempotency and concurrency bulkheads for protected AI/OCR paths.
+- DLQ/poison-message visibility and an audited redrive procedure for supported background jobs.
+- Fallback only to an explicitly approved provider/model route with equivalent-or-stricter classification, privacy, region, retention, security and quality controls.
+- Every fallback re-evaluates current policy and quota. If no approved equivalent route exists, fail closed and surface a controlled error.
+
+### Mandatory gate interpretation
+SEC-021 must pass in G4: provider outage opens the circuit; fallback is used only when approved and must not turn DENY into ALLOW. No fallback is a valid safe outcome when the approved route list is empty.
+
+G4 completes the P1 capabilities:
+- full Policy Registry immutable version and review/approve/activate/revoke lifecycle;
+- full registered lineage graph and derivative deletion/reconciliation;
+- ACL revocation and cache invalidation under concurrency;
+- atomic quota reservation, immutable usage ledger and idempotent reconciliation;
+- versioned rate cards, tenant budgets and cost attribution;
+- tenant-isolated usage/cost/circuit telemetry.
+
+### G6 boundary
+G6 performs production tuning, scale/soak/chaos tests, operational alert thresholds, runbooks, incident drills and capacity planning. It must not be the first phase in which a provider circuit breaker or approved fallback exists.
+
+### Additional acceptance
+- SEC-018 through SEC-025 pass for the implemented scope, including policy revocation, derivative deletion, quota races, provider outage/fallback and tenant telemetry isolation.
+- All fallback paths have a documented provider/model policy matrix, data-region/retention review and regression benchmark.
+- Failure of Policy, Lineage, Quota or DLP dependency produces deny/stop behavior for protected paths.
+- No unresolved P0 regression is accepted.
+
+A green circuit-breaker unit test alone is insufficient; outage simulation must exercise the actual approved route boundary and audit evidence.
