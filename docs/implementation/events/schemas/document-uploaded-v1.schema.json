@@ -1,19 +1,53 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"https://schemas.example.invalid/platform/document-uploaded-v1.schema.json",
-  "title":"document.v1.uploaded",
-  "allOf":[{"$ref":"event-envelope-v1.schema.json"}],
-  "properties":{
-    "eventType":{"const":"document.v1.uploaded"},
-    "producer":{"const":"document-service"},
-    "aggregateType":{"const":"document"},
-    "data":{"type":"object","required":["documentId","documentVersionId","mimeType","sizeBytes","checksumSha256"],
-      "properties":{
-        "documentId":{"type":"string","format":"uuid"},
-        "documentVersionId":{"type":"string","format":"uuid"},
-        "mimeType":{"type":"string"},
-        "sizeBytes":{"type":"integer","minimum":0},
-        "checksumSha256":{"type":"string","pattern":"^[a-fA-F0-9]{64}$"}
-      },"additionalProperties":false}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/platform/document-uploaded-v1.schema.json",
+  "title": "document.v1.uploaded",
+  "allOf": [
+    {
+      "$ref": "event-envelope-v1.schema.json"
+    }
+  ],
+  "properties": {
+    "eventType": {
+      "const": "document.v1.uploaded"
+    },
+    "producer": {
+      "const": "document-service"
+    },
+    "aggregateType": {
+      "const": "document"
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "documentId",
+        "documentVersionId",
+        "mimeType",
+        "sizeBytes",
+        "checksumSha256"
+      ],
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "documentVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "mimeType": {
+          "type": "string"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checksumSha256": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
   }
 }

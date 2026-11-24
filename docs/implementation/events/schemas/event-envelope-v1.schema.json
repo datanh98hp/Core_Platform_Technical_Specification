@@ -3,21 +3,74 @@
   "$id": "https://schemas.example.invalid/platform/event-envelope-v1.schema.json",
   "title": "Platform Event Envelope v1",
   "type": "object",
-  "required": ["eventId","eventType","eventVersion","occurredAt","producer","tenantId","aggregateType","aggregateId","correlationId","data"],
+  "required": [
+    "eventId",
+    "eventType",
+    "eventVersion",
+    "occurredAt",
+    "producer",
+    "tenantId",
+    "aggregateType",
+    "aggregateId",
+    "correlationId",
+    "data"
+  ],
   "properties": {
-    "eventId": {"type":"string","format":"uuid"},
-    "eventType": {"type":"string","pattern":"^[a-z]+\\.v[1-9][0-9]*\\.[a-z_.]+$"},
-    "eventVersion": {"type":"integer","minimum":1},
-    "occurredAt": {"type":"string","format":"date-time"},
-    "producer": {"type":"string"},
-    "tenantId": {"type":"string","format":"uuid"},
-    "actorUserId": {"type":["string","null"]},
-    "aggregateType": {"type":"string"},
-    "aggregateId": {"type":"string","format":"uuid"},
-    "correlationId": {"type":"string","format":"uuid"},
-    "causationId": {"type":["string","null"]},
-    "traceparent": {"type":["string","null"]},
-    "data": {"type":"object"}
+    "eventId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "eventType": {
+      "type": "string",
+      "pattern": "^[a-z]+\\.v[1-9][0-9]*\\.[a-z_.]+$"
+    },
+    "eventVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "producer": {
+      "type": "string"
+    },
+    "tenantId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "actorUserId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "aggregateType": {
+      "type": "string"
+    },
+    "aggregateId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "correlationId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "causationId": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "traceparent": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "data": {
+      "type": "object"
+    }
   },
   "additionalProperties": false
 }

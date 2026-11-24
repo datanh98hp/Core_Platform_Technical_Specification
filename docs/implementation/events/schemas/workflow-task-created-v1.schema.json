@@ -1,19 +1,56 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"https://schemas.example.invalid/platform/workflow-task-created-v1.schema.json",
-  "title":"workflow.v1.task.created",
-  "allOf":[{"$ref":"event-envelope-v1.schema.json"}],
-  "properties":{
-    "eventType":{"const":"workflow.v1.task.created"},
-    "producer":{"const":"workflow-service"},
-    "aggregateType":{"const":"workflow_task"},
-    "data":{"type":"object","required":["runId","taskId","taskType"],
-      "properties":{
-        "runId":{"type":"string","format":"uuid"},
-        "taskId":{"type":"string","format":"uuid"},
-        "taskType":{"type":"string"},
-        "assigneeUserId":{"type":["string","null"]},
-        "dueAt":{"type":["string","null"],"format":"date-time"}
-      },"additionalProperties":false}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/platform/workflow-task-created-v1.schema.json",
+  "title": "workflow.v1.task.created",
+  "allOf": [
+    {
+      "$ref": "event-envelope-v1.schema.json"
+    }
+  ],
+  "properties": {
+    "eventType": {
+      "const": "workflow.v1.task.created"
+    },
+    "producer": {
+      "const": "workflow-service"
+    },
+    "aggregateType": {
+      "const": "workflow_task"
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "runId",
+        "taskId",
+        "taskType"
+      ],
+      "properties": {
+        "runId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "taskId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "taskType": {
+          "type": "string"
+        },
+        "assigneeUserId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dueAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
   }
 }

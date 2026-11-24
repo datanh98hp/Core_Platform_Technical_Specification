@@ -1,33 +1,34 @@
-# Core Platform Documentation — V2.2 Active Baseline
+# Project Documentation — V2.2 baseline
 
-**Mandatory entrypoint for every AI coding agent, developer and reviewer.** Read this file before any repository task.
+## Mandatory baseline
+**Core Platform Technical Specification V2.2 – Architecture & Security Hardening** is the authoritative baseline. It supersedes V2.1. AI coding agents must not implement against V2.1 assumptions.
 
-## Document precedence
-1. `AGENTS.md` and this README define repository-wide agent entry requirements.
-2. `governance/AI_Agent_Coding_Governance_v2.2.md` defines the mandatory agent workflow and prohibitions.
-3. `architecture/Core_Platform_Technical_Specification_V2.2.md` is the active architecture/security baseline.
-4. Accepted ADRs under `adr/` are binding decisions.
-5. SQL, gRPC, security acceptance tests and the implementation backlog define implementation contracts.
+## Read first
+1. `architecture/Core_Platform_Technical_Specification_V2.2.md` and `.docx`
+2. `adr/ADR-011` through `ADR-014`
+3. `security/AI_Data_Protection_and_Security_Harness_Policy_v2.2.md`
+4. `governance/AI_Agent_Coding_Governance_v2.2.md`
+5. `implementation/sql/08-control-plane-v2.2.sql`
+6. `implementation/proto/controlplane/v1/controlplane.proto`
+7. `implementation/backlog/v2.2-implementation-backlog.md`
 
-V2.2 supersedes V2.1 wherever they conflict. V1/V2.1 material is historical reference only and must not be treated as the active specification.
+## V2.2 additions
+- Security Policy Registry with immutable versioning, approval and server-side enforcement.
+- Data Lineage across source documents, OCR, chunks, embeddings, retrieval contexts and AI outputs.
+- Quota & Cost Governance with atomic reservations, immutable ledger and reconciliation.
+- Resilience with deadlines, retries, circuit breaker, bulkheads, DLQ and policy-aware fallback.
+- No cross-service foreign keys or direct cross-schema runtime access.
+- Expanded SEC-016…SEC-025 acceptance tests.
 
-## V2.2 scope
-- Modular multi-tenant Core Platform with API Gateway/BFF and domain services.
-- Mandatory AI Security Harness and trusted server-side policy enforcement.
-- Security Policy Registry with immutable, approved policy versions.
-- Data Lineage for source and derived data, classification/ACL inheritance and deletion propagation.
-- Quota & Cost Governance with atomic reservations, usage ledger and reconciliation.
-- Resilience with timeouts, bounded retries, idempotency, circuit breaker, bulkheads, DLQ and policy-aware fallback.
-- Per-service database ownership; no cross-service foreign keys or direct cross-service database access.
+## Migration caution
+V2.1 assets are retained as historical implementation material. They are not authority where they conflict with V2.2. The V2.2 SQL migration creates control-plane structures but intentionally does not blindly drop existing cross-service foreign keys. Inspect the deployed schema, back up, test on a sanitized clone and apply reviewed constraint-removal migrations separately.
 
-## Read order for implementation
-1. `../AGENTS.md`
-2. `governance/AI_Agent_Coding_Governance_v2.2.md`
-3. `architecture/Core_Platform_Technical_Specification_V2.2.md`
-4. Applicable ADRs under `adr/`
-5. Relevant schema/proto/OpenAPI/event contracts
-6. `implementation/backlog/v2.2-implementation-backlog.md` and `acceptance-matrix.csv`
-7. Security policy and acceptance tests before any AI/data-path change
-
-## Release principle
-Security controls must be enforced at runtime and tested with negative, cross-tenant, outage/fail-closed, idempotency and deletion-propagation cases. A prompt instruction or an agent self-report is not evidence of enforcement. Security-sensitive changes require independent human review.
+## Folder map
+- `architecture/` — technical specification
+- `adr/` — architecture decision records
+- `security/` — AI data protection and Harness policy
+- `governance/` — AI coding agent rules
+- `implementation/sql/` — database schema and ownership rules
+- `implementation/proto/` — gRPC contracts
+- `implementation/backlog/` — implementation and acceptance backlog
+- `implementation/deploy/` — development/pilot infrastructure

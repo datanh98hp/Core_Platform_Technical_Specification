@@ -1,22 +1,66 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"https://schemas.example.invalid/platform/ai-request-completed-v1.schema.json",
-  "title":"ai.v1.request.completed",
-  "allOf":[{"$ref":"event-envelope-v1.schema.json"}],
-  "properties":{
-    "eventType":{"const":"ai.v1.request.completed"},
-    "producer":{"const":"ai-engine-service"},
-    "aggregateType":{"const":"ai_request"},
-    "data":{"type":"object","required":["requestId","modelKey","purpose","inputTokens","outputTokens","latencyMs"],
-      "properties":{
-        "requestId":{"type":"string","format":"uuid"},
-        "modelKey":{"type":"string"},
-        "purpose":{"type":"string"},
-        "inputTokens":{"type":"integer","minimum":0},
-        "outputTokens":{"type":"integer","minimum":0},
-        "latencyMs":{"type":"integer","minimum":0},
-        "estimatedCost":{"type":"number","minimum":0},
-        "currency":{"type":"string","minLength":3,"maxLength":3}
-      },"additionalProperties":false}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/platform/ai-request-completed-v1.schema.json",
+  "title": "ai.v1.request.completed",
+  "allOf": [
+    {
+      "$ref": "event-envelope-v1.schema.json"
+    }
+  ],
+  "properties": {
+    "eventType": {
+      "const": "ai.v1.request.completed"
+    },
+    "producer": {
+      "const": "ai-engine-service"
+    },
+    "aggregateType": {
+      "const": "ai_request"
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "requestId",
+        "modelKey",
+        "purpose",
+        "inputTokens",
+        "outputTokens",
+        "latencyMs"
+      ],
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "modelKey": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "inputTokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "outputTokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "latencyMs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "estimatedCost": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3
+        }
+      },
+      "additionalProperties": false
+    }
   }
 }

@@ -1,19 +1,55 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"https://schemas.example.invalid/platform/document-processed-v1.schema.json",
-  "title":"document.v1.processed",
-  "allOf":[{"$ref":"event-envelope-v1.schema.json"}],
-  "properties":{
-    "eventType":{"const":"document.v1.processed"},
-    "producer":{"const":"document-service"},
-    "aggregateType":{"const":"document"},
-    "data":{"type":"object","required":["documentId","documentVersionId","processingJobId","pipelineVersion","artifactTypes"],
-      "properties":{
-        "documentId":{"type":"string","format":"uuid"},
-        "documentVersionId":{"type":"string","format":"uuid"},
-        "processingJobId":{"type":"string","format":"uuid"},
-        "pipelineVersion":{"type":"string"},
-        "artifactTypes":{"type":"array","items":{"type":"string"}}
-      },"additionalProperties":false}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/platform/document-processed-v1.schema.json",
+  "title": "document.v1.processed",
+  "allOf": [
+    {
+      "$ref": "event-envelope-v1.schema.json"
+    }
+  ],
+  "properties": {
+    "eventType": {
+      "const": "document.v1.processed"
+    },
+    "producer": {
+      "const": "document-service"
+    },
+    "aggregateType": {
+      "const": "document"
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "documentId",
+        "documentVersionId",
+        "processingJobId",
+        "pipelineVersion",
+        "artifactTypes"
+      ],
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "documentVersionId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "processingJobId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "pipelineVersion": {
+          "type": "string"
+        },
+        "artifactTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
   }
 }

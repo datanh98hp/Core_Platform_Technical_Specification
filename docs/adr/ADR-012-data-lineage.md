@@ -1,12 +1,13 @@
-# ADR-012 — Data Lineage Governs Derived Data
+# ADR-012 — Data Lineage governs derived data
 
 **Status:** Accepted for V2.2
 
 ## Decision
-Maintain a source-to-derived lineage graph for document, OCR, normalized text, chunk, embedding, RAG context, AI request and output. Derived data inherits the highest parent classification and intersection of parent ACLs. Deletion/revocation propagates through all descendants and processing queues.
+Track source-to-derived graph for OCR, normalized text, chunks, embeddings, retrieval contexts and AI outputs. Derived data inherits highest classification and intersected ACL. Delete/revoke propagates through descendants.
+
+## Rationale
+Enables audit, revocation and deletion completeness.
 
 ## Consequences
-- No transformation may lower classification or widen ACL.
-- Current ACL is checked server-side before retrieval.
-- Delete/revoke completion is auditable; failures are retried and surfaced.
-- Raw content is not stored in lineage metadata.
+- Update contracts, tests, runbooks and audit evidence when implementation changes.
+- No agent may bypass this ADR; deviations require a superseding ADR approved by a human.

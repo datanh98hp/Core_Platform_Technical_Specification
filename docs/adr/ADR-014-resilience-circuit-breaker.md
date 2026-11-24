@@ -1,12 +1,13 @@
-# ADR-014 — Policy-aware Resilience and Circuit Breaker
+# ADR-014 — Resilience is bounded and policy-aware
 
 **Status:** Accepted for V2.2
 
 ## Decision
-Use explicit deadlines, bounded retries with jitter, idempotency, bulkheads, DLQ and circuit breaker states CLOSED/OPEN/HALF_OPEN. Provider fallback is permitted only after fresh policy validation and only to an approved provider/model with equivalent or stricter controls.
+Use deadlines, bounded retries with jitter, idempotency, bulkheads, circuit breaker and DLQ. Fallback is allowed only after a fresh policy decision and only to an equivalent or stricter approved provider/model.
+
+## Rationale
+Avoids cascading failure and policy downgrade during outage.
 
 ## Consequences
-- OPEN circuit fast-fails without provider request.
-- Retry applies only to transient, safe-to-retry operations.
-- Fallback never converts policy DENY into ALLOW or bypasses quota.
-- Circuit transitions and fallback decisions are observable and audited.
+- Update contracts, tests, runbooks and audit evidence when implementation changes.
+- No agent may bypass this ADR; deviations require a superseding ADR approved by a human.
