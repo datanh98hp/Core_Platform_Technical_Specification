@@ -1,0 +1,26 @@
+test_id,scenario,expected_result,priority,evidence
+SEC-001,C2 in prompt,C2 blocked from external provider,P0,Harness audit + provider mock
+SEC-002,C2 uploaded for summarization,Request denied before provider egress,P0,Harness audit + provider mock
+SEC-003,C2 in extracted text,Classification inherited and request blocked,P0,Lineage + Harness audit
+SEC-004,C2 wrapped in JSON,Payload inspection still blocks request,P0,Provider mock
+SEC-005,Encoded or fragmented canary,No C2/C3 canary in outbound payload,P0,Provider mock + verifier
+SEC-006,C2 in OCR output,OCR derivative remains C2 and external AI blocked,P0,Lineage + Harness audit
+SEC-007,C2 in RAG chunk,Chunk excluded from external AI context,P0,Retrieval evidence + provider mock
+SEC-008,Prompt injection in document,Untrusted content cannot change policy or tool permissions,P0,Agent/tool audit
+SEC-009,Agent tool reads protected data,Server-side authorization and least privilege enforced,P0,AuthZ audit
+SEC-010,Direct provider call bypass,Network egress denies non-Gateway workload,P0,Egress firewall evidence
+SEC-011,Harness/DLP/policy outage,Protected operation fails closed,P0,Fault injection + audit
+SEC-012,Cross-tenant access,No cross-tenant data retrieval,P0,Isolation tests
+SEC-013,Sensitive telemetry,No raw sensitive payload in logs/traces/metrics,P0,Telemetry scan
+SEC-014,Output contains protected canary,Output scan blocks or redacts per policy,P0,Provider mock + verifier
+SEC-015,Delete/revoke derived data,Chunks/embeddings/cache/derivatives receive deletion/revoke,P0,Lineage deletion evidence
+SEC-016,Caller forges classification/AI permission,Server rejects forged authority,P0,Harness audit + provider mock
+SEC-017,Policy stale or revoked,Protected provider egress denied,P0,Registry audit + egress evidence
+SEC-018,ACL revoked before RAG context,No chunk returned and cache invalidated,P1,AuthZ + retrieval test
+SEC-019,Delete source with descendants,All derived assets and queued jobs deleted/revoked,P1,Lineage graph + job evidence
+SEC-020,Retry quota reservation/reconcile,Atomic reservation and no duplicate charge,P1,Ledger + concurrency test
+SEC-021,Provider outage with fallback,Circuit opens; fallback only to approved equivalent route,P1,Circuit events + provider mock
+SEC-022,Policy/lineage/quota outage,Protected operation fails closed,P0,Fault injection + audit
+SEC-023,Cross-service FK/runtime DB access,No cross-service FK or direct runtime schema grants,P0,DB catalog + role grants
+SEC-024,Sensitive data in telemetry,No raw payload or secret emitted,P0,Telemetry scan
+SEC-025,Tenant governance isolation,Tenant cannot access another tenant cost/usage/circuit data,P1,Cross-tenant API tests
