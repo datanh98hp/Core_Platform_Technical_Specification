@@ -1,9 +1,9 @@
 # G0 — Discovery, Business Validation & Scope Freeze
 
-**Plan version:** 1.0  
+**Plan version:** 1.1  
 **Status:** LOCKED — pending explicit user approval  
-**Target window:** Weeks 1–2 from approved project start  
-**Planning ceiling:** VND 8,000,000  
+**Target window:** Weeks 1–2
+**Planning ceiling:** VND 8,000,000
 **Gate:** G0 → G1  
 **Accountable owner:** Product Owner / Founder
 
@@ -85,3 +85,34 @@ G0 is accepted only when all are evidenced:
 **GO to G1** requires an accepted G0 Gate Review, approved PRD V1, selected workflows, initial data/legal review, named design partners and explicit user authorization.
 
 **NO-GO** if customer evidence, lawful data path or MVP boundary is unclear. Record the blocker and request a decision; do not silently broaden discovery or start G1.
+
+
+## 10. V1.1 amendment — ICP, investment evidence and legal baseline
+
+This section adds to the V1.0 scope and supersedes any weaker discovery assumption.
+
+### Required ICP decision
+G0 must select one initial ICP segment, not retain “SME” as an undifferentiated market. The decision pack must name the vertical/process cluster, customer size band, economic buyer, process owner, daily user, data/security approver, buying trigger, current tools, data readiness, procurement path and willingness-to-pay evidence.
+
+Score at least two candidate segments against pain frequency, economic impact, urgency, data quality/availability, lawful processing route, repeatability, integration burden, sales cycle and ability to pay. Record evidence, assumptions and confidence separately. Select one primary ICP; document rejected segments and reasons.
+
+### Commercial discovery
+For the selected ICP, validate a recurring subscription hypothesis plus onboarding/integration fees and usage limits. Obtain a price-range signal from at least five qualified buyer conversations or document why a smaller sample is decision-useful. Do not represent verbal interest as a signed contract or guaranteed revenue.
+
+### Additional G0 deliverables
+- ICP scorecard and selected-segment decision.
+- Buyer map and buying-process notes.
+- Initial package/pricing hypotheses and competitor/workaround evidence.
+- Named supplier/role capacity plan and written quotations for material cost categories.
+- 12-month post-launch OPEX assumptions, explicitly marked provisional until pilot data exists.
+- Legal & Data Governance Register initial review and data-flow/processor-role questions.
+
+### Additional G0 acceptance
+- At least one ICP segment is selected with evidence and a named economic buyer profile.
+- At least two prospective design partners are identified and at least one confirms a concrete workflow evaluation path; target remains three.
+- At least two independent buyer conversations provide explicit willingness-to-pay or budget-process evidence; otherwise record the commercial validation gap and its consequence.
+- The VND 180m plan has been reconciled to written or clearly labelled budgetary supplier estimates; no quote is presented as a binding offer unless signed.
+- The Project Owner confirms the resource plan is feasible, including at least 16 hours/week of owner capacity during active delivery, or revises the schedule.
+- No real customer data is processed until legal, security and contractual gates are satisfied.
+
+G0 exit still requires a separate explicit owner decision.
