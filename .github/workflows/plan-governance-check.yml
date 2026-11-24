@@ -42,7 +42,7 @@ jobs:
             file="docs/implementation/phases/$phase.md"
             test -s "$file" || { echo "::error::Missing phase plan: $file"; exit 1; }
             grep -q 'Entry conditions' "$file"
-            grep -q 'Work packages' "$file"
+            grep -qi 'work packages' "$file"
             grep -q 'Acceptance criteria' "$file"
             grep -q 'Exit gate' "$file"
             grep -q 'pending explicit user approval' "$file"
