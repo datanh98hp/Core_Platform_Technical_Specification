@@ -18,6 +18,8 @@ This is the audit ledger for plan, phase, change and release decisions. Append n
 
 ## Approval recording rules
 
+Only the Project Owner, or a delegate whose authority is explicitly recorded by the Project Owner, may approve a phase, Change Request, budget, release or material risk.
+
 An approval entry must state the decision-maker, timestamp in Asia/Ho_Chi_Minh, exact scope, phase/work package or CR ID, approved budget/time limit where relevant, conditions, and a durable reference to the user instruction, GitHub issue comment, approved PR review or merge.
 
 A plan-document PR approval does not authorize phase execution unless it explicitly says so. A phase exit approval does not authorize unrelated work. Silence, vague acknowledgement and an agent-authored status are not approvals.
