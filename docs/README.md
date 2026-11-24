@@ -1,6 +1,6 @@
 # Core Platform Documentation — V2.2 Active Baseline
 
-**Mandatory entrypoint for every AI coding agent, developer and reviewer.** Read this file before any repository task.
+**Mandatory entrypoint for every AI coding agent, developer and reviewer.** Read this file before any repository task. The repository-wide instruction contract is `../AGENTS.md`; tool adapters are provided for Codex, GitHub Copilot, Claude Code and Gemini CLI. Other agents must be configured to load the canonical contract or follow `../AI_AGENT_START_HERE.md` manually.
 
 ## Document precedence
 1. `AGENTS.md` and this README define repository-wide agent entry requirements.
@@ -21,13 +21,14 @@ V2.2 supersedes V2.1 wherever they conflict. V1/V2.1 material is historical refe
 - Per-service database ownership; no cross-service foreign keys or direct cross-service database access.
 
 ## Read order for implementation
-1. `../AGENTS.md`
-2. `governance/AI_Agent_Coding_Governance_v2.2.md`
-3. `architecture/Core_Platform_Technical_Specification_V2.2.md`
-4. Applicable ADRs under `adr/`
-5. Relevant schema/proto/OpenAPI/event contracts
-6. `implementation/backlog/v2.2-implementation-backlog.md` and `acceptance-matrix.csv`
-7. Security policy and acceptance tests before any AI/data-path change
+1. `../AI_AGENT_START_HERE.md` when using a tool without automatic instruction discovery
+2. `../AGENTS.md` (canonical project instruction contract; automatically discovered by supported agents such as Codex)
+3. `governance/AI_Agent_Coding_Governance_v2.2.md`
+4. `architecture/Core_Platform_Technical_Specification_V2.2.md`
+5. Applicable ADRs under `adr/`
+6. Relevant schema/proto/OpenAPI/event contracts
+7. `implementation/backlog/v2.2-implementation-backlog.md` and `acceptance-matrix.csv`
+8. Security policy and acceptance tests before any AI/data-path change
 
 ## Release principle
 Security controls must be enforced at runtime and tested with negative, cross-tenant, outage/fail-closed, idempotency and deletion-propagation cases. A prompt instruction or an agent self-report is not evidence of enforcement. Security-sensitive changes require independent human review.
