@@ -3,7 +3,7 @@ name: Import the exact V2.2 documentation archive
 on:
   push:
     branches:
-      - docs/v2.2-agent-governance
+      - '**'
     paths:
       - docs-import/Core_Platform_Technical_Specification_V2.2_Architecture_Security_Hardening.zip
 
