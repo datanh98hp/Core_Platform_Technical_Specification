@@ -1,5 +1,36 @@
 {
   "package": "Engineering Implementation Package v1",
   "source": "Core Platform Technical Specification v2",
-  "contents": [".env.example","README.md","backlog/acceptance-matrix.csv","backlog/sprint-backlog.md","deploy/docker-compose.yml","deploy/nats-server.conf","events/README.md","events/schemas/ai-request-completed-v1.schema.json","events/schemas/document-processed-v1.schema.json","events/schemas/document-uploaded-v1.schema.json","events/schemas/event-envelope-v1.schema.json","events/schemas/knowledge-indexing-completed-v1.schema.json","events/schemas/workflow-task-created-v1.schema.json","openapi/openapi-v1.yaml","proto/ai/v1/ai.proto","proto/core/v1/core.proto","proto/document/v1/document.proto","proto/identity/v1/identity.proto","proto/integration/v1/integration.proto","proto/knowledge/v1/knowledge.proto","proto/workflow/v1/workflow.proto","sql/00-bootstrap.sql","sql/01-identity.sql","sql/02-core.sql","sql/03-document.sql","sql/04-knowledge.sql","sql/05-ai.sql","sql/06-workflow.sql","sql/07-integration.sql","sql/database-ownership.md"]
+  "contents": [
+    ".env.example",
+    "README.md",
+    "backlog/acceptance-matrix.csv",
+    "backlog/sprint-backlog.md",
+    "deploy/docker-compose.yml",
+    "deploy/nats-server.conf",
+    "events/README.md",
+    "events/schemas/ai-request-completed-v1.schema.json",
+    "events/schemas/document-processed-v1.schema.json",
+    "events/schemas/document-uploaded-v1.schema.json",
+    "events/schemas/event-envelope-v1.schema.json",
+    "events/schemas/knowledge-indexing-completed-v1.schema.json",
+    "events/schemas/workflow-task-created-v1.schema.json",
+    "openapi/openapi-v1.yaml",
+    "proto/ai/v1/ai.proto",
+    "proto/core/v1/core.proto",
+    "proto/document/v1/document.proto",
+    "proto/identity/v1/identity.proto",
+    "proto/integration/v1/integration.proto",
+    "proto/knowledge/v1/knowledge.proto",
+    "proto/workflow/v1/workflow.proto",
+    "sql/00-bootstrap.sql",
+    "sql/01-identity.sql",
+    "sql/02-core.sql",
+    "sql/03-document.sql",
+    "sql/04-knowledge.sql",
+    "sql/05-ai.sql",
+    "sql/06-workflow.sql",
+    "sql/07-integration.sql",
+    "sql/database-ownership.md"
+  ]
 }
