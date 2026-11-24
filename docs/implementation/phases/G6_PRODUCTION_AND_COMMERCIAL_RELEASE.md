@@ -1,9 +1,9 @@
 # G6 — Production Hardening and Commercial Release
 
-**Plan version:** 1.0  
+**Plan version:** 1.1  
 **Status:** LOCKED — pending explicit user approval  
-**Target window:** Weeks 27–30  
-**Planning ceiling:** VND 20,000,000  
+**Target window:** Weeks 31–34
+**Planning ceiling:** VND 20,000,000
 **Gate:** G6 → Commercial Operations  
 **Accountable owner:** Technical Owner and Product Owner
 
@@ -87,3 +87,38 @@ Convert the validated pilot service into a supportable production offering. G6 c
 **GO to commercial release** requires a signed Go/No-Go decision, accepted operational evidence, approved production configuration, legal/customer documentation, pricing and support ownership.
 
 **NO-GO** for unresolved critical security findings, failed restore, unowned incident response, unapproved provider/data route, or production configuration that does not meet the approved SLO.
+
+
+## 11. V1.1 amendment — quantified production and investment gate
+
+### Required SLO baseline
+The initial candidate objectives are defined in docs/implementation/AI_QUALITY_AND_SLO_BASELINE_V1.1.md:
+- monthly customer-facing availability ≥99.5%;
+- non-AI API P95 ≤800ms and standard AI Assistant end-to-end P95 ≤20 seconds under the approved workload;
+- 95% of eligible jobs start within 2 minutes; 95% of standard bounded OCR/ingestion jobs complete within 5 minutes;
+- RPO ≤24 hours and RTO ≤8 hours, proven through a timed restore drill;
+- ACL revocation denies at the next protected request and derivative cache invalidation objective is ≤60 seconds;
+- approved MVP-path deletion completes within 24 hours, with incomplete provider deletion disclosed and tracked.
+
+G6 must run load/soak tests at a minimum of 2× observed pilot peak or the approved launch forecast, whichever is higher. If a target is revised, an approved CR must show measured evidence, customer impact, risk and compensating controls before release.
+
+### Production investment gate
+Before requesting release approval, submit:
+1. Actual phase cost and commitments, remaining contingency and variance report.
+2. Observed monthly OPEX per tenant and a 12-month base/downside cash forecast.
+3. Price book, usage limits, overage rules and gross-margin model using full variable COGS.
+4. Named operational owner, support hours, severity definitions, escalation and incident exercises.
+5. Production topology, secret rotation, security scan, backup/restore, load/soak and rollback evidence.
+6. Current legal counsel review, signed customer terms/DPA as applicable, provider/subprocessor register, privacy disclosures and data-closeout procedures.
+7. Release scope, capacity limits, staged rollout and rollback/kill-switch decision.
+
+### Additional hard NO-GO conditions
+- no successful restore drill or no named incident owner;
+- any unresolved critical security finding or unauthorized cross-tenant/data disclosure;
+- unapproved provider, model, region, subprocessor or data-retention route;
+- failed mandatory P0/P1 regression or unverified deletion path;
+- no defensible 12-month operating budget/runway;
+- pricing below the approved gross-margin floor without a separately approved strategic exception;
+- missing current legal review for the actual released features and customer/data routes.
+
+G6 completion is not permission to deploy. Production release requires a separate, explicit Project Owner Go/No-Go decision with exact version, tenant scope, deployment window, spend limit and rollback authority.
