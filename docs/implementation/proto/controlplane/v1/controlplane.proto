@@ -1,0 +1,81 @@
+syntax = "proto3";
+package controlplane.v1;
+option go_package = "example.com/platform/gen/controlplane/v1;controlplanev1";
+import "google/protobuf/timestamp.proto";
+
+service ControlPlaneService {
+ rpc ResolvePolicy(ResolvePolicyRequest) returns (PolicyDecision);
+ rpc RevalidateDecision(RevalidateDecisionRequest) returns (PolicyDecision);
+ rpc CreateLineageNode(CreateLineageNodeRequest) returns (LineageNode);
+ rpc CreateLineageEdge(CreateLineageEdgeRequest) returns (LineageEdge);
+ rpc PropagateDeletion(PropagateDeletionRequest) returns (DeletionJob);
+ rpc ReserveUsage(ReserveUsageRequest) returns (UsageReservation);
+ rpc ReconcileUsage(ReconcileUsageRequest) returns (UsageLedgerEntry);
+ rpc GetQuota(GetQuotaRequest) returns (QuotaStatus);
+ rpc EvaluateProviderRoute(EvaluateProviderRouteRequest) returns (ProviderRouteDecision);
+ rpc ReportProviderOutcome(ReportProviderOutcomeRequest) returns (CircuitState);
+ rpc GetCircuitState(GetCircuitStateRequest) returns (CircuitState);
+}
+message RequestContext {
+ string correlation_id = 1;
+ string idempotency_key = 2;
+ // Identifiers are correlation hints only; trust comes from authenticated claims/workload identity.
+ string tenant_id = 3;
+ string actor_id = 4;
+}
+message ResourceRef { string resource_type = 1; string resource_id = 2; }
+message ResolvePolicyRequest {
+ RequestContext context = 1; string purpose = 2; repeated ResourceRef resources = 3;
+ string requested_provider = 4; string requested_model = 5; string feature = 6;
+}
+message PolicyDecision {
+ string decision_id = 1; string decision = 2; string reason_code = 3;
+ string policy_id = 4; int32 policy_version = 5;
+ google.protobuf.Timestamp expires_at = 6; string opaque_decision_token = 7;
+}
+message RevalidateDecisionRequest {
+ RequestContext context = 1; string decision_id = 2;
+ repeated ResourceRef resources = 3; string provider = 4; string model = 5;
+}
+message CreateLineageNodeRequest {
+ RequestContext context = 1; ResourceRef resource = 2; string classification = 3;
+ string acl_version = 4; string content_fingerprint = 5; string storage_ref = 6;
+ string processor = 7; string processor_version = 8; string retention_class = 9;
+}
+message LineageNode {
+ string node_id = 1; string tenant_id = 2; ResourceRef resource = 3;
+ string effective_classification = 4; string deletion_state = 5;
+}
+message CreateLineageEdgeRequest {
+ RequestContext context = 1; string parent_node_id = 2; string child_node_id = 3;
+ string transformation = 4; string provenance_json = 5;
+}
+message LineageEdge { string edge_id = 1; string parent_node_id = 2; string child_node_id = 3; }
+message PropagateDeletionRequest { RequestContext context = 1; string root_node_id = 2; string reason = 3; }
+message DeletionJob { string job_id = 1; string status = 2; int32 affected_nodes = 3; }
+message ReserveUsageRequest {
+ RequestContext context = 1; string request_id = 3; string module = 4; string feature = 5;
+ string metric = 6; double estimated_amount = 7; string policy_id = 8; int32 policy_version = 9;
+}
+message UsageReservation { string reservation_id = 1; string status = 2; double reserved_amount = 3; string currency = 4; }
+message ReconcileUsageRequest {
+ RequestContext context = 1; string reservation_id = 3; string usage_type = 4;
+ double actual_quantity = 5; double actual_cost = 6; string currency = 7;
+ string provider = 8; string model = 9; string rate_card_version = 10;
+}
+message UsageLedgerEntry { string usage_id = 1; string reconciliation_status = 2; double actual_cost = 3; }
+message GetQuotaRequest { RequestContext context = 1; string metric = 2; string module = 3; }
+message QuotaStatus { double used = 1; double reserved = 2; double hard_limit = 3; bool allowed = 4; string reason_code = 5; }
+message EvaluateProviderRouteRequest {
+ RequestContext context = 1; string decision_id = 2; string provider = 3; string model = 4; string operation = 5;
+}
+message ProviderRouteDecision {
+ bool allowed = 1; string selected_provider = 2; string selected_model = 3;
+ string circuit_state = 4; string reason_code = 5;
+}
+message ReportProviderOutcomeRequest {
+ RequestContext context = 1; string provider = 2; string model = 3; string operation = 4;
+ bool success = 5; int32 latency_ms = 6; string error_code = 7;
+}
+message GetCircuitStateRequest { RequestContext context = 1; string provider = 2; string model = 3; string operation = 4; }
+message CircuitState { string state = 1; int32 failure_count = 2; google.protobuf.Timestamp next_probe_at = 3; }
