@@ -1,0 +1,39 @@
+name: Validate AI agent instructions
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  agent-instructions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check mandatory instruction files
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            "AGENTS.md"
+            "AI_AGENT_START_HERE.md"
+            "CLAUDE.md"
+            "GEMINI.md"
+            ".github/copilot-instructions.md"
+            "docs/README.md"
+            "docs/governance/AI_Agent_Coding_Governance_v2.2.md"
+            "docs/architecture/Core_Platform_Technical_Specification_V2.2.md"
+            "docs/implementation/backlog/v2.2-implementation-backlog.md"
+          )
+          for file in "${required[@]}"; do
+            test -s "$file" || { echo "::error::Missing or empty required file: $file"; exit 1; }
+          done
+          grep -q 'docs/README.md' AGENTS.md
+          grep -q 'docs/README.md' .github/copilot-instructions.md
+          grep -q 'AGENTS.md' CLAUDE.md
+          grep -q 'AGENTS.md' GEMINI.md
+          echo "All mandatory AI-agent entrypoints and V2.2 references are present."
