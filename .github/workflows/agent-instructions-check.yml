@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check mandatory instruction files
+      - name: Check mandatory instruction and execution-plan files
         shell: bash
         run: |
           set -euo pipefail
@@ -26,14 +26,33 @@ jobs:
             ".github/copilot-instructions.md"
             "docs/README.md"
             "docs/governance/AI_Agent_Coding_Governance_v2.2.md"
+            "docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md"
+            "docs/governance/GITHUB_REPOSITORY_PROTECTION_SETUP.md"
             "docs/architecture/Core_Platform_Technical_Specification_V2.2.md"
             "docs/implementation/backlog/v2.2-implementation-backlog.md"
+            "docs/implementation/EXECUTION_PLAN_V2.2.md"
+            "docs/implementation/APPROVAL_REGISTER.md"
+            "docs/implementation/EXECUTION_REGISTER.md"
+            "docs/templates/CHANGE_REQUEST_TEMPLATE.md"
+            "docs/templates/PHASE_GATE_REVIEW_TEMPLATE.md"
+            "docs/templates/PHASE_TASK_WORK_ORDER_TEMPLATE.md"
+            ".github/CODEOWNERS"
           )
           for file in "${required[@]}"; do
             test -s "$file" || { echo "::error::Missing or empty required file: $file"; exit 1; }
           done
           grep -q 'docs/README.md' AGENTS.md
-          grep -q 'docs/README.md' .github/copilot-instructions.md
+          grep -q 'AI_AGENT_EXECUTION_CONTROL_V1.md' AGENTS.md
+          grep -q 'EXECUTION_PLAN_V2.2.md' AGENTS.md
           grep -q 'AGENTS.md' CLAUDE.md
           grep -q 'AGENTS.md' GEMINI.md
-          echo "All mandatory AI-agent entrypoints and V2.2 references are present."
+          grep -q 'No approval means no implementation' docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md
+          grep -q '@datanh98hp' .github/CODEOWNERS
+          for phase in G0_DISCOVERY_AND_SCOPE G1_PLATFORM_FOUNDATION G2_SECURITY_P0 G3_AI_OFFICE_MVP G4_CONTROL_PLANE_P1 G5_CUSTOMER_PILOT G6_PRODUCTION_AND_COMMERCIAL_RELEASE; do
+            file="docs/implementation/phases/$phase.md"
+            test -s "$file" || { echo "::error::Missing phase plan: $file"; exit 1; }
+            grep -q 'Acceptance criteria' "$file"
+            grep -q 'Exit gate' "$file"
+            grep -q 'pending explicit user approval' "$file"
+          done
+          echo "All mandatory AI-agent entrypoints, execution plan and phase plans are present."

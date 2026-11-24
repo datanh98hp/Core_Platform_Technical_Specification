@@ -1,0 +1,89 @@
+name: Validate phase plan and change-control governance
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  plan-governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate mandatory plan and governance documents
+        shell: bash
+        run: |
+          set -euo pipefail
+          required=(
+            "docs/implementation/EXECUTION_PLAN_V2.2.md"
+            "docs/implementation/APPROVAL_REGISTER.md"
+            "docs/implementation/EXECUTION_REGISTER.md"
+            "docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md"
+            "docs/governance/GITHUB_REPOSITORY_PROTECTION_SETUP.md"
+            "docs/templates/CHANGE_REQUEST_TEMPLATE.md"
+            "docs/templates/PHASE_GATE_REVIEW_TEMPLATE.md"
+            "docs/templates/PHASE_TASK_WORK_ORDER_TEMPLATE.md"
+            ".github/CODEOWNERS"
+            ".github/pull_request_template.md"
+          )
+          for file in "${required[@]}"; do
+            test -s "$file" || { echo "::error::Missing or empty governance file: $file"; exit 1; }
+          done
+
+          for phase in G0_DISCOVERY_AND_SCOPE G1_PLATFORM_FOUNDATION G2_SECURITY_P0 G3_AI_OFFICE_MVP G4_CONTROL_PLANE_P1 G5_CUSTOMER_PILOT G6_PRODUCTION_AND_COMMERCIAL_RELEASE; do
+            file="docs/implementation/phases/$phase.md"
+            test -s "$file" || { echo "::error::Missing phase plan: $file"; exit 1; }
+            grep -q 'Entry conditions' "$file"
+            grep -qi 'work packages' "$file"
+            grep -q 'Acceptance criteria' "$file"
+            grep -q 'Exit gate' "$file"
+            grep -q 'pending explicit user approval' "$file"
+          done
+
+          grep -Fq -- 'No approval means no implementation' docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md || { echo 'Missing no-approval stop rule'; exit 1; }
+          grep -Fq -- 'Project Owner' docs/implementation/APPROVAL_REGISTER.md || { echo 'Missing Project Owner approval authority'; cat docs/implementation/APPROVAL_REGISTER.md; exit 1; }
+          grep -Fq -- 'datanh98hp' .github/CODEOWNERS || { echo 'Missing Project Owner in CODEOWNERS'; cat .github/CODEOWNERS; exit 1; }
+          echo 'Approval authority and owner review rules validated.'
+
+      - name: Require authorization metadata and a Change Request for controlled baseline changes
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          set -euo pipefail
+
+          for field in "Phase:" "Approved work item:" "Owner authorization reference:" "Change Request:"; do
+            grep -Fq "$field" <<< "$PR_BODY" || {
+              echo "::error::Pull request body is missing required field: $field"
+              exit 1
+            }
+          done
+
+          git diff --name-only "$BASE_SHA...$HEAD_SHA" > /tmp/changed-files.txt
+          protected='^(AGENTS.md|AI_AGENT_START_HERE.md|docs/README.md|docs/architecture/|docs/adr/|docs/governance/|docs/implementation/(EXECUTION_PLAN_V2.2.md|phases/|APPROVAL_REGISTER.md|EXECUTION_REGISTER.md|backlog/|acceptance-matrix.csv)|.github/CODEOWNERS|.github/pull_request_template.md)'
+
+          if grep -E "$protected" /tmp/changed-files.txt >/tmp/protected-changes.txt; then
+            cr_file="$(grep -E '^docs/change-control/requests/CR-[^/]+\.md$' /tmp/changed-files.txt | head -n 1 || true)"
+            if [[ -z "$cr_file" ]]; then
+              echo "::error::Controlled baseline changed without a new Change Request in docs/change-control/requests/."
+              cat /tmp/protected-changes.txt
+              exit 1
+            fi
+            test -s "$cr_file"
+            grep -q '^## 2\. Requested change' "$cr_file"
+            grep -q '^## 6\. Decision record' "$cr_file"
+            echo "Controlled baseline changes have a linked Change Request: $cr_file"
+          fi
+
+          echo "Authorization metadata and change-control structure validated."

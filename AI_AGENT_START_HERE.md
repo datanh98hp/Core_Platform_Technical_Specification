@@ -25,3 +25,19 @@ Tool-specific files are adapters only. They must not contain conflicting archite
 ## Important limitation
 
 There is no universal mechanism that forces every third-party AI coding tool to discover repository instructions automatically. Discovery depends on the agent harness and its settings. The repository therefore provides standard entry files for Codex, Copilot, Claude and Gemini, a generic manual entrypoint for other tools, and CI checks that detect missing instruction files. Each agent host must still support or be configured to load its adapter.
+
+
+## Mandatory execution governance
+
+Before implementation, also read:
+- docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md
+- docs/implementation/EXECUTION_PLAN_V2.2.md
+- docs/implementation/APPROVAL_REGISTER.md
+- docs/implementation/EXECUTION_REGISTER.md
+- The exact phase document and approved work order for the task
+
+The plan and each phase are locked until the Project Owner explicitly authorizes them. No approval means no implementation. Do not infer approval from silence, a vague acknowledgment, CI success or acceptance of a different phase. Do not skip phases or automatically start a later phase after a gate passes.
+
+Any deviation in scope, budget, schedule, architecture, data handling, security controls, acceptance criteria, providers, dependencies or release plan must be either directly and unambiguously requested by the Project Owner or submitted as a Change Request and held until approved. Never silently make a deviation. All work must use a branch and PR; agents must not merge or deploy.
+
+See docs/governance/GITHUB_REPOSITORY_PROTECTION_SETUP.md for the additional GitHub settings required to enforce owner review at merge time.
