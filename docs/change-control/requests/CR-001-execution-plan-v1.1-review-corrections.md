@@ -26,6 +26,7 @@ Prepare and review Plan V1.1 with the following controlled corrections:
 8. Add ICP selection, SaaS packaging, total COGS/gross-margin measurement and pilot commercial evidence.
 9. Add a Vietnam Legal & Data Governance Register using the laws/instruments applicable on the actual processing/release date.
 10. Strengthen repository validation for V1.1 documents while preserving the requirement for human Project Owner approval and separate phase authorization.
+11. Add a phase-by-phase execution playbook with work-package sequence, owners, timing, outputs, Definition of Done, exit criteria, weekly governance and draft work-order controls.
 
 ## 3. Reason and expected benefit
 

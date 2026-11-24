@@ -238,3 +238,12 @@ CI validates repository structure and metadata only. It does not prove that busi
 **Evidence:** to be recorded in docs/implementation/APPROVAL_REGISTER.md
 
 This plan becomes the approved investment and execution baseline only after the Project Owner explicitly accepts the exact V1.1 proposal, budget and schedule. Each phase still requires its own start authorization and exit decision.
+
+
+## 14. Phase-by-phase execution playbook
+
+The operational sequence, G0–G6 work-package breakdown, role accountability, weekly cadence, evidence requirements and work-order preparation checklist are defined in:
+
+- docs/implementation/PHASE_EXECUTION_PLAYBOOK_V1.1.md
+
+The playbook is subordinate to this plan and the relevant phase document. Its work-package identifiers are planning references only. They do not authorize work; each package requires an approved work order under the phase-start authorization.
