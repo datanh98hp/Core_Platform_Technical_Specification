@@ -48,9 +48,10 @@ jobs:
             grep -q 'pending explicit user approval' "$file"
           done
 
-          grep -q 'No approval means no implementation' docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md
-          grep -q 'Project Owner' docs/implementation/APPROVAL_REGISTER.md
-          grep -q '@datanh98hp' .github/CODEOWNERS
+          grep -Fq -- 'No approval means no implementation' docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md || { echo 'Missing no-approval stop rule'; exit 1; }
+          grep -Fq -- 'Project Owner' docs/implementation/APPROVAL_REGISTER.md || { echo 'Missing Project Owner approval authority'; cat docs/implementation/APPROVAL_REGISTER.md; exit 1; }
+          grep -Fq -- 'datanh98hp' .github/CODEOWNERS || { echo 'Missing Project Owner in CODEOWNERS'; cat .github/CODEOWNERS; exit 1; }
+          echo 'Approval authority and owner review rules validated.'
 
       - name: Require authorization metadata and a Change Request for controlled baseline changes
         if: github.event_name == 'pull_request'
