@@ -1,9 +1,9 @@
 # G3 — AI Ops Desk / AI Office MVP
 
-**Plan version:** 1.0  
+**Plan version:** 1.1  
 **Status:** LOCKED — pending explicit user approval  
-**Target window:** Weeks 11–17  
-**Planning ceiling:** VND 45,000,000  
+**Target window:** Weeks 12–19
+**Planning ceiling:** VND 42,000,000
 **Gate:** G3 → G4  
 **Accountable owner:** Product Owner
 
@@ -96,3 +96,28 @@ For high-impact or policy-sensitive questions, unsupported answers must be refus
 **GO to G4** requires an MVP release candidate, accepted workflow results, benchmark evidence, regression/security results, known gaps and explicit user approval.
 
 **NO-GO** if MVP depends on an unapproved data path, fails tenant ACL, lacks auditability for approvals or cannot demonstrate grounded answers on the agreed benchmark.
+
+
+## 11. V1.1 amendment — binding AI quality and SLO evidence
+
+This section supersedes the approximate 100-question benchmark wording in section 7.
+
+### Benchmark
+- At least 120 versioned cases, with at least 40 per approved MVP workflow.
+- Include Vietnamese diacritics, supported document types, OCR/noisy scans, tables, missing/conflicting/outdated evidence, unanswerable requests, prompt injection, unauthorized access, revocation and cross-tenant negatives.
+- Each case records expected sources, expected answer or abstention, classification, ACL condition, severity, dataset version and reviewer.
+- Only synthetic or explicitly approved test data may be used.
+
+### Minimum metric gates
+Use the thresholds and measurement rules in docs/implementation/AI_QUALITY_AND_SLO_BASELINE_V1.1.md: Recall@5 ≥90%, citation correctness ≥95%, grounded/useful answers ≥90%, factual correctness ≥92%, abstention precision ≥95%, unsupported material-claim rate ≤3%, zero critical error and zero unauthorized context/data leakage. Report by workflow and case family. One workflow below threshold or any critical leakage blocks acceptance even if the global average passes.
+
+### Operational baseline
+Measure non-AI API P95, standard assistant end-to-end P95, queue start delay, OCR/ingestion completion, error rates, provider availability and unit cost using a stated test load. G3 records the observed baseline; G5 validates with pilot users; G6 either confirms the proposed production SLO or requests an approved CR.
+
+### Additional acceptance
+- Evaluation is reproducible from a versioned dataset, harness, model/provider, prompt, retrieval configuration and policy version.
+- Citation validity is checked against the actual source passage and document version.
+- Model/provider cost and latency are reported separately from retrieval, application and support costs.
+- No benchmark result is accepted if critical leakage, cross-tenant access or a policy bypass is hidden by aggregate scoring.
+
+The 120-case threshold is a minimum for this initial scope. Any claim of statistically representative performance must separately justify sample size and sampling methodology.

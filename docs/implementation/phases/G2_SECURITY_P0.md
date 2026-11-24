@@ -1,9 +1,9 @@
 # G2 — Security Foundation and P0 Release Blockers
 
-**Plan version:** 1.0  
+**Plan version:** 1.1  
 **Status:** LOCKED — pending explicit user approval  
-**Target window:** Weeks 6–10  
-**Planning ceiling:** VND 30,000,000  
+**Target window:** Weeks 6–11
+**Planning ceiling:** VND 32,000,000
 **Gate:** G2 → G3  
 **Accountable owner:** Security Owner / Technical Owner
 
@@ -23,7 +23,7 @@ Implement and independently verify the P0 security controls required before the 
 
 | ID | Work package | Required activities | Backlog mapping |
 |---|---|---|---|
-| G2-01 | Baseline inventory | Freeze V2.1 assumptions; inventory code, deployed schema, credentials and provider egress | BL-001 |
+| G2-01 | Baseline inventory | Freeze V2.2 assumptions; inventory code, deployed schema, credentials and provider egress | BL-001 |
 | G2-02 | Trusted identity | Establish trusted tenant/actor context; reject caller authority escalation | BL-002 |
 | G2-03 | AI Security Harness | Enforce controls for prompts, files, OCR, RAG, embeddings, tools and outputs | BL-003 |
 | G2-04 | Provider egress | Only approved AI Gateway workload may reach approved providers | BL-004 |
@@ -98,3 +98,31 @@ Stop the affected AI/data path if a canary leaks, tenant isolation fails, policy
 **GO to G3** only after the mandatory security acceptance set passes, independent review is complete, critical/high findings are fixed or explicitly dispositioned by the authorized owner, and the user grants next-stage approval.
 
 **NO-GO** for any unresolved P0 security blocker.
+
+
+## 11. V1.1 amendment — P0 Policy, Lineage and Deletion on the MVP path
+
+This amendment is mandatory and overrides any interpretation that defers minimum policy, provenance or deletion behavior to G4.
+
+### Additional work packages
+| ID | Work package | Required activities | Backlog mapping |
+|---|---|---|---|
+| G2-10 | MVP Policy Decision Minimum | Server-side allow/deny decision, immutable policy version reference, deny-by-default, expiry/revoke, current-policy revalidation immediately before provider egress and tool execution | Minimum slice of BL-010/011 |
+| G2-11 | MVP Lineage and Derivative Controls | Record source-to-OCR/normalized-file/chunk/embedding/index/context/output provenance for every shipped MVP path; propagate classification at highest level and ACL by strictest intersection | Minimum slice of BL-012/013 |
+| G2-12 | MVP Revocation and Deletion | Immediately deny access on revoke/delete; mark descendants unavailable; propagate deletion to all registered MVP derivatives, caches and queued jobs; expose incomplete/retry state | Minimum slice of BL-014 |
+
+G2 does not need the complete enterprise Policy Registry or full generalized lineage graph; it must implement the minimum enforceable controls for the exact MVP paths. G4 completes the lifecycle and scale.
+
+### Additional security acceptance
+- SEC-016 forged classification or forged external-AI permission is rejected server-side.
+- SEC-017 stale, expired or revoked policy blocks egress/tool execution; cache invalidation is evidenced.
+- SEC-015 deletion/revocation is tested end-to-end across every source and derivative type actually used by the MVP.
+- An unauthorized/deleted source cannot enter RAG context; a revoked permission is denied at the next protected request.
+- Derivative records inherit the highest source classification and the strictest ACL; caller-supplied tags/ACLs cannot lower restrictions.
+- If lineage, policy or deletion state cannot be confirmed, the affected operation fails closed.
+- No MVP work package is accepted with an unimplemented or mocked-only deletion/revocation control on a path that can process customer data.
+
+### Explicit G2/G4 boundary
+G2 delivers a minimum secure vertical slice for the three approved workflows. G4 adds full immutable Policy Registry lifecycle, generalized lineage graph, complete descendant reconciliation and operational dashboards. A G4 backlog label or dependency does not justify postponing a G2 P0 acceptance requirement.
+
+The gate remains NO-GO for unresolved P0 findings.

@@ -6,7 +6,9 @@ This is the audit ledger for plan, phase, change and release decisions. Append n
 
 | Item | Current state | Approval evidence |
 |---|---|---|
-| CP-V2.2-EXEC-001 plan V1.0 | PROPOSED — awaiting Project Owner review | Initial plan PR; merge/approval pending |
+| CP-V2.2-EXEC-001 plan V1.0 | Historical proposal; superseded by V1.1 proposal for review only | Prior PR history; no phase authority |
+| CP-V2.2-EXEC-001 plan V1.1 | PROPOSED — awaiting Project Owner decision | CR-001 / review PR; no acceptance recorded |
+| CR-001 | PROPOSED — awaiting Project Owner decision | None |
 | G0 Discovery | LOCKED — not authorized | None |
 | G1 Platform Foundation | LOCKED — not authorized | None |
 | G2 Security P0 | LOCKED — not authorized | None |
@@ -15,6 +17,7 @@ This is the audit ledger for plan, phase, change and release decisions. Append n
 | G5 Customer Pilot | LOCKED — not authorized | None |
 | G6 Production Release | LOCKED — not authorized | None |
 | Contingency reserve VND 15m | LOCKED — not authorized | None |
+| Production deployment | NOT AUTHORIZED | None |
 
 ## Approval recording rules
 
@@ -28,10 +31,21 @@ A plan-document PR approval does not authorize phase execution unless it explici
 
 | Decision ID | Date/time (UTC+7) | Decision maker | Scope / phase / CR | Decision | Conditions / limits | Evidence |
 |---|---|---|---|---|---|---|
-| — | — | — | — | No phase approvals recorded | G0–G6 remain locked | — |
+| — | — | — | — | No plan V1.1, CR-001, phase or production approval recorded | G0–G6 and contingency remain locked | — |
 
 ## Pending proposals
 
 | ID | Description | Status | Decision required |
 |---|---|---|---|
-| CR-000 | Create and adopt initial phase execution plan and AI agent change-control documents | PROPOSED | Project Owner review of initial documentation PR |
+| CR-000 | Create initial phase execution plan and AI agent change-control documents | Historical proposal | Retain audit history |
+| CR-001 | Correct cross-phase security sequencing, investment model, schedule, AI quality, SLO, legal and commercial gates | PROPOSED | Project Owner decision on exact V1.1 baseline |
+
+## Repository controls still requiring administrator verification
+
+- Require pull requests to merge into main.
+- Require at least one approving review and Code Owner approval.
+- Require both plan-governance and AI-agent-instructions status checks.
+- Dismiss stale approvals after new commits and require conversation resolution.
+- Block force-push and branch deletion; restrict bypass to a documented emergency path.
+- Protect production GitHub Environments with required reviewers and scoped secrets.
+- Verify the settings in GitHub itself; a CODEOWNERS file or green workflow does not prove branch protection is enabled.

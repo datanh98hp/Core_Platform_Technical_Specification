@@ -24,6 +24,10 @@ jobs:
           set -euo pipefail
           required=(
             "docs/implementation/EXECUTION_PLAN_V2.2.md"
+            "docs/implementation/INVESTMENT_BASELINE_V1.1.md"
+            "docs/implementation/AI_QUALITY_AND_SLO_BASELINE_V1.1.md"
+            "docs/implementation/LEGAL_DATA_GOVERNANCE_REGISTER_V1.1.md"
+            "docs/change-control/requests/CR-001-execution-plan-v1.1-review-corrections.md"
             "docs/implementation/APPROVAL_REGISTER.md"
             "docs/implementation/EXECUTION_REGISTER.md"
             "docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md"
@@ -46,7 +50,14 @@ jobs:
             grep -q 'Acceptance criteria' "$file"
             grep -q 'Exit gate' "$file"
             grep -q 'pending explicit user approval' "$file"
+            grep -Fq '**Plan version:** 1.1' "$file" || { echo "::error::Phase plan is not aligned to V1.1: $file"; exit 1; }
+            grep -Fq '**Status:** LOCKED' "$file" || { echo "::error::Phase must remain LOCKED until owner approval: $file"; exit 1; }
           done
+
+          grep -Fq '**Status:** PROPOSED' docs/change-control/requests/CR-001-execution-plan-v1.1-review-corrections.md || { echo 'CR-001 must remain proposed until owner decision'; exit 1; }
+          grep -Fq 'PROPOSED' docs/implementation/EXECUTION_PLAN_V2.2.md || { echo 'Plan must remain proposed until owner decision'; exit 1; }
+          grep -Fq 'VND 180,000,000' docs/implementation/EXECUTION_PLAN_V2.2.md || { echo 'Missing investment envelope'; exit 1; }
+          echo 'V1.1 plan, phase lock state and investment/legal/quality artifacts validated.'
 
           grep -Fq -- 'No approval means no implementation' docs/governance/AI_AGENT_EXECUTION_CONTROL_V1.md || { echo 'Missing no-approval stop rule'; exit 1; }
           grep -Fq -- 'Project Owner' docs/implementation/APPROVAL_REGISTER.md || { echo 'Missing Project Owner approval authority'; cat docs/implementation/APPROVAL_REGISTER.md; exit 1; }
@@ -71,7 +82,7 @@ jobs:
           done
 
           git diff --name-only "$BASE_SHA...$HEAD_SHA" > /tmp/changed-files.txt
-          protected='^(AGENTS.md|AI_AGENT_START_HERE.md|docs/README.md|docs/architecture/|docs/adr/|docs/governance/|docs/implementation/(EXECUTION_PLAN_V2.2.md|phases/|APPROVAL_REGISTER.md|EXECUTION_REGISTER.md|backlog/|acceptance-matrix.csv)|.github/CODEOWNERS|.github/pull_request_template.md)'
+          protected='^(AGENTS.md|AI_AGENT_START_HERE.md|docs/README.md|docs/architecture/|docs/adr/|docs/governance/|docs/implementation/(EXECUTION_PLAN_V2.2.md|INVESTMENT_BASELINE_V1.1.md|AI_QUALITY_AND_SLO_BASELINE_V1.1.md|LEGAL_DATA_GOVERNANCE_REGISTER_V1.1.md|phases/|APPROVAL_REGISTER.md|EXECUTION_REGISTER.md|backlog/|acceptance-matrix.csv)|.github/CODEOWNERS|.github/pull_request_template.md)'
 
           if grep -E "$protected" /tmp/changed-files.txt >/tmp/protected-changes.txt; then
             cr_file="$(grep -E '^docs/change-control/requests/CR-[^/]+\.md$' /tmp/changed-files.txt | head -n 1 || true)"

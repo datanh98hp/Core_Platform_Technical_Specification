@@ -1,9 +1,9 @@
 # G1 — Core Platform Technical Foundation
 
-**Plan version:** 1.0  
+**Plan version:** 1.1  
 **Status:** LOCKED — pending explicit user approval  
-**Target window:** Weeks 3–5  
-**Planning ceiling:** VND 20,000,000  
+**Target window:** Weeks 3–5
+**Planning ceiling:** VND 18,000,000
 **Gate:** G1 → G2  
 **Accountable owner:** Technical Owner / Founder
 
@@ -82,3 +82,23 @@ Build the smallest working engineering foundation that conforms to Core Platform
 **GO to G2** requires a reproducible development/staging baseline, passing CI, documented service ownership, contract and migration evidence, and an accepted known-gap register.
 
 **NO-GO** for unresolved cross-service data coupling, secret leakage, irreproducible builds or unreviewed destructive migrations.
+
+
+## 10. V1.1 amendment — investment and operational foundation
+
+This section supplements the prior G1 work packages and acceptance criteria.
+
+### Additional foundation requirements
+- Map each deployed module to its data owner, schema, DB role, service identity, tenant boundary, event contract and responsible maintainer.
+- Add a service-level test harness for identity/tenant context, policy decision hooks, lineage metadata and deletion state before G2.
+- Instrument baseline non-AI API latency, error rate, queue delay, provider calls and cost dimensions without logging sensitive payloads.
+- Record staging topology, backup/restore assumptions, secret ownership and environment separation. Docker Compose remains development-only and is not accepted as production HA.
+- Validate CI checks, required reviewer configuration and production Environment protection with repository-administrator evidence.
+
+### Additional G1 acceptance
+- The effort estimate is decomposed by work package and role; each external package has a named owner, estimate, dependency and acceptance method.
+- The Project Owner and Technical Owner have confirmed capacity, review availability and vendor substitution/handback arrangements.
+- Repository branch protection is either verified enabled with required PR/Code Owner/status checks, or explicitly recorded as a blocking administrative task before any implementation phase that relies on protected-main enforcement.
+- Baseline SLI measurements and a safe telemetry review are available for G2/G3 comparison.
+
+G1 remains LOCKED until separately authorized.
