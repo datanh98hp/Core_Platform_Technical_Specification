@@ -24,6 +24,7 @@ jobs:
           set -euo pipefail
           required=(
             "docs/implementation/EXECUTION_PLAN_V2.2.md"
+            "docs/implementation/PHASE_EXECUTION_PLAYBOOK_V1.1.md"
             "docs/implementation/INVESTMENT_BASELINE_V1.1.md"
             "docs/implementation/AI_QUALITY_AND_SLO_BASELINE_V1.1.md"
             "docs/implementation/LEGAL_DATA_GOVERNANCE_REGISTER_V1.1.md"
@@ -82,7 +83,7 @@ jobs:
           done
 
           git diff --name-only "$BASE_SHA...$HEAD_SHA" > /tmp/changed-files.txt
-          protected='^(AGENTS.md|AI_AGENT_START_HERE.md|docs/README.md|docs/architecture/|docs/adr/|docs/governance/|docs/implementation/(EXECUTION_PLAN_V2.2.md|INVESTMENT_BASELINE_V1.1.md|AI_QUALITY_AND_SLO_BASELINE_V1.1.md|LEGAL_DATA_GOVERNANCE_REGISTER_V1.1.md|phases/|APPROVAL_REGISTER.md|EXECUTION_REGISTER.md|backlog/|acceptance-matrix.csv)|.github/CODEOWNERS|.github/pull_request_template.md)'
+          protected='^(AGENTS.md|AI_AGENT_START_HERE.md|docs/README.md|docs/architecture/|docs/adr/|docs/governance/|docs/implementation/(EXECUTION_PLAN_V2.2.md|PHASE_EXECUTION_PLAYBOOK_V1.1.md|INVESTMENT_BASELINE_V1.1.md|AI_QUALITY_AND_SLO_BASELINE_V1.1.md|LEGAL_DATA_GOVERNANCE_REGISTER_V1.1.md|phases/|APPROVAL_REGISTER.md|EXECUTION_REGISTER.md|backlog/|acceptance-matrix.csv)|.github/CODEOWNERS|.github/pull_request_template.md)'
 
           if grep -E "$protected" /tmp/changed-files.txt >/tmp/protected-changes.txt; then
             cr_file="$(grep -E '^docs/change-control/requests/CR-[^/]+\.md$' /tmp/changed-files.txt | head -n 1 || true)"
